@@ -1,10 +1,3 @@
-/**
- * Template Name: INSPINIA - Multipurpose Admin & Dashboard Template
- * By (Author): WebAppLayers
- * Module/App (File Name): Custom Table
- * Version: 4.0.0
- */
-
 class Table {
 
     constructor(table, parentInstance) {
@@ -398,12 +391,6 @@ class Table {
 
                     raw = raw.replace(/\s+/g, ' '); // Normalize spaces
 
-                    // Date
-                    const parsedDate = new Date(raw);
-                    if (!isNaN(parsedDate.getTime())) {
-                        return parsedDate.getTime();
-                    }
-
                     const parenMatch = raw.match(/^\(([\d,.\s]+)\)$/);
                     if (parenMatch) {
                         const val = parseFloat(parenMatch[1].replace(/,/g, ''));
@@ -436,11 +423,16 @@ class Table {
                     }
 
                     // Plain number
-                    // const cleaned = raw.replace(/[^0-9.-]+/g, ''); // keep digits, minus sign, dot
-                    // if (!isNaN(cleaned)) {
-                    //     const val = parseFloat(cleaned);
-                    //     return isNaN(val) ? raw.toLowerCase() : val;
-                    // }
+                    if (/^-?\d+(\.\d+)?$/.test(raw)) {
+                        const val = parseFloat(raw);
+                        return isNaN(val) ? raw.toLowerCase() : val;
+                    }
+
+                    // Date
+                    const parsedDate = new Date(raw);
+                    if (!isNaN(parsedDate.getTime())) {
+                        return parsedDate.getTime();
+                    }
 
                     // Fallback string
                     return raw.toLowerCase();
